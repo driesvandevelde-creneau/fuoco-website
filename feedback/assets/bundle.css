@@ -1,0 +1,171 @@
+/* Fuoco — component styles. Loaded after tokens.css: colours, spacing, radii, strokes and type classes
+   come from tokens; the few numbers here are measured positions inside a component (source noted). */
+
+body { margin: 0; background: var(--surface); color: var(--ink); font-family: var(--font-sans); }
+
+/* Logo and Fiammo — inline vectors in currentColor; they take the accent colour by default */
+.fu-logo, .fu-fiammo { display: inline-block; flex: none; vertical-align: middle; color: var(--accent); overflow: visible; }
+
+/* Poster — A4 794 × 1123 (postcard 446 × 559); positions measured from the brand book's posters, pages 14, 23–24 and 29 */
+.fu-poster { position: relative; box-sizing: border-box; overflow: hidden; font-family: var(--font-display); }
+.fu-poster--type { display: flex; flex-direction: column; }
+.fu-poster__blocks { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
+.fu-poster__headline { margin: 0; font-weight: 400; text-transform: uppercase; color: var(--fu-ink); }
+.fu-poster__headline > span, .fu-poster__title > span, .fu-poster__note > span, .fu-poster__date > span { display: block; }
+.fu-poster__foot { display: flex; justify-content: space-between; align-items: flex-end; box-sizing: border-box; color: var(--fu-accent); }
+.fu-poster__date, .fu-poster__corner, .fu-poster__note { margin: 0; font-family: var(--font-hand); color: var(--fu-accent); white-space: pre; }
+.fu-poster__placed, .fu-poster__logo-corner, .fu-poster__logo-top, .fu-poster__corner, .fu-poster__title { position: absolute; }
+.fu-poster__title { margin: 0; font-weight: 400; text-transform: uppercase; }
+.fu-poster__photo { position: absolute; overflow: hidden; transform-origin: top left; background: var(--black-pearl); }
+.fu-poster__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Menus — drawn on the designer's artboards, 1 px = 0.14 mm: drinks 1126 × 1920, food 1357 × 1920, event (A5) 1060 × 1500.
+   The artwork is set baseline to baseline: head → first dish 51, dish → description 24, description lines 22,
+   last line → next dish 46, last line → next head 95 (72 on the A5 card). The margins below turn those into box
+   spacing for the faces' metrics (the baseline sits half the line height + 0.285 / 0.31 / 0.323 of the size into a
+   line box for the display, text and hand faces). */
+.fu-mcover, .fu-mpage { position: relative; box-sizing: border-box; overflow: hidden; }
+.fu-mpage { background: var(--white); color: var(--black-pearl); font-family: var(--font-sans); }
+.fu-at { position: absolute; margin: 0; font-weight: 400; white-space: pre; }
+.fu-at--display { font-family: var(--font-display); text-transform: uppercase; }
+.fu-at--sans { font-family: var(--font-sans); }
+.fu-at--hand { font-family: var(--font-hand); }
+.fu-mtitle { position: absolute; inset: 0; margin: 0; font-weight: 400; pointer-events: none; }
+.fu-mcover__logo, .fu-mcover__mark, .fu-mdecor, .fu-mpage__photo, .fu-mpage__photo img { position: absolute; }
+.fu-mdecor { display: flex; transform-origin: center; }
+.fu-mpage__photo { left: 0; right: 0; bottom: 0; overflow: hidden; }
+.fu-mpage__photo img { display: block; object-fit: cover; }
+.fu-mpage__body { position: relative; box-sizing: border-box; padding: 0 var(--fu-right) 0 var(--fu-left); }
+.fu-mpage__body > * + *, .fu-mcols__col > * + * { margin-top: 62.725px; }
+.fu-mpage--event .fu-mpage__body > * + *, .fu-mpage--event .fu-mcols__col > * + * { margin-top: 40.1px; }
+.fu-mpage__body > .fu-msec--frame + * { margin-top: 99.725px; }
+.fu-mpage__body > .fu-mnote--large { margin-top: 57.78px; }
+.fu-mpage--event .fu-mpage__body > .fu-mnote--large { margin-top: 35.16px; }
+
+/* MenuColumns and two-column sections share the page's columns */
+.fu-mcols, .fu-msec__cols, .fu-mhead { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--fu-gutter, 100px); align-items: start; }
+.fu-mcols__col, .fu-msec__col { min-width: 0; }
+
+/* MenuSection — GT America Expanded caps in the accent, a Mansalva qualifier beside it (below it on the A5 card) */
+.fu-msec { position: relative; color: var(--black-pearl); }
+.fu-msec__head { position: relative; display: flex; align-items: baseline; }
+.fu-msec__title { position: relative; margin: 0; text-transform: uppercase; color: var(--fu-accent, var(--desert)); }
+.fu-msec__qual { margin: 0 0 0 8px; color: var(--fu-accent, var(--desert)); white-space: nowrap; }
+.fu-msec__unit { position: absolute; right: -1px; top: 10.275px; white-space: nowrap; }
+.fu-msec--below .fu-msec__head, .fu-mpage--event .fu-msec:not(.fu-msec--beside) .fu-msec__head { flex-direction: column; align-items: flex-start; }
+.fu-msec--below .fu-msec__qual, .fu-mpage--event .fu-msec:not(.fu-msec--beside) .fu-msec__qual { margin: -2.6px 0 0; }
+.fu-msec__head + .fu-msec__col, .fu-msec__head + .fu-msec__cols { margin-top: 24.345px; }
+.fu-msec--below .fu-msec__head + *, .fu-mpage--event .fu-msec:not(.fu-msec--beside) .fu-msec__head + * { margin-top: 23.945px; }
+.fu-msec__col > * + * { margin-top: 22.07px; }
+.fu-mpage--event .fu-msec__col > * + * { margin-top: 22.45px; }
+.fu-msec__frame { position: absolute; left: -50px; right: -54px; top: 14.475px; bottom: -32.2px; border: 2px solid var(--fu-accent, var(--desert)); pointer-events: none; }
+.fu-msec--frame .fu-msec__title { z-index: 1; padding: 0 12px 0 8px; background: var(--white); }
+
+/* MenuItem — the name in GT Ultra 23, allergens raised at 13.8, the price in Mansalva on the first baseline */
+.fu-mitem__row, .fu-mnote__row, .fu-mitem__subrow { display: flex; align-items: baseline; }
+.fu-mitem__name { flex: 1 1 auto; min-width: 0; margin: 0; white-space: pre-line; }
+.fu-mitem__allergens { margin-left: 7px; line-height: 0; vertical-align: 8px; white-space: nowrap; }
+.fu-mitem__origin { margin-left: 17px; line-height: 20px; white-space: nowrap; }
+.fu-mitem__price, .fu-mitem__subprice { flex: none; margin: 0 -2px 0 16px; color: var(--fu-accent, var(--desert)); white-space: nowrap; }
+.fu-mitem__unit { flex: none; margin: 0 -1px 0 16px; white-space: nowrap; }
+.fu-mitem__desc { max-width: calc(100% - 52px); margin: 1.93px 0 0; white-space: pre-line; }
+/* without a price a dish may run 20px into the gutter, as the set menus do */
+.fu-mitem--open .fu-mitem__name, .fu-mitem--open .fu-mitem__desc { max-width: none; margin-right: -20px; }
+.fu-mitem__subs { margin: 1.93px 0 0; padding: 0; list-style: none; }
+.fu-mitem__subname { flex: 1 1 auto; min-width: 0; white-space: pre-line; }
+.fu-mitem__subdesc { display: block; font-size: 14px; line-height: 15px; }
+.fu-mpage--event .fu-mitem__desc, .fu-mpage--event .fu-mitem__sub { font-size: 18px; line-height: 20px; }
+.fu-mpage--event .fu-mitem__desc, .fu-mpage--event .fu-mitem__subs { margin-top: 1.55px; }
+
+/* MenuNote */
+.fu-mnote { color: var(--fu-accent, var(--desert)); }
+.fu-mnote__hand { flex: 1 1 auto; margin: 0; white-space: pre-line; }
+.fu-mnote__text { margin: 0; white-space: pre-line; }
+
+/* The foot: hand note and small print bottom-left, an aside or the social block bottom-right */
+.fu-mfoot { position: absolute; }
+.fu-mfoot__hand { margin: 0; white-space: pre; }
+.fu-mfoot__notes p { margin: 0; white-space: pre-line; }
+.fu-mfoot__notes p + p { margin-top: 7px; }
+.fu-mpage--event .fu-mfoot__notes p + p { margin-top: 11px; }
+.fu-mfoot__hand + .fu-mfoot__notes { margin-top: 113.58px; }
+.fu-msocial__marks { position: relative; height: 88px; }
+.fu-msocial__marks .fu-logo { position: absolute; transform-origin: center; }
+.fu-msocial__handle { margin: 0; white-space: nowrap; }
+.fu-msocial__tagline { margin: 3.34px 0 0; }
+
+/* The event card's head */
+.fu-mhead__brand .fu-logo { display: block; margin: -10.5px 0 0 -3px; }
+.fu-mhead__when { margin: 26.27px 0 0; line-height: 25px; white-space: pre; }
+.fu-mpage__body > .fu-mhead__rule { height: 0; margin: 42.13px 0 0 2px; border: 0; border-top: 1px solid var(--fu-accent, var(--desert)); }
+.fu-mpage__body > .fu-mhead__rule + * { margin-top: 45.525px; }
+
+/* AllergenKey — a 2px outline in double-spanish-white, the title breaking it, codes raised beside the names */
+.fu-allergens { position: relative; }
+.fu-allergens__box { position: relative; margin: 0 -56px 0 -46px; padding: 34.3px 0 29.7px 47px; border: 2px solid var(--double-spanish-white); }
+.fu-allergens__title { position: absolute; left: 34px; top: -19.69px; margin: 0; padding: 0 12px; background: var(--white); white-space: nowrap; }
+.fu-allergens__list { display: grid; grid-auto-flow: column; grid-template-columns: 188px 166px auto; margin: 0; }
+.fu-allergens__item { display: flex; align-items: baseline; line-height: 25px; }
+.fu-allergens__item dt { position: relative; top: -8px; flex: none; width: 27px; text-align: center; white-space: nowrap; }
+.fu-allergens__item dd { margin: 0 0 0 5px; white-space: nowrap; }
+.fu-allergens__fiammo { position: absolute; display: flex; }
+.fu-allergens__note { margin: 17.42px 0 0 3px; }
+
+/* Brand book pages — 1920 × 1080; positions from the PDF */
+.fu-slide, .fu-opener, .fu-concept, .fu-statement { position: relative; box-sizing: border-box; width: 1920px; height: 1080px; overflow: hidden; font-family: var(--font-sans); }
+.fu-slide__title { position: absolute; left: var(--book-margin); top: 26px; margin: 0; font-weight: 400; }
+.fu-slide__credit { position: absolute; left: 1323px; top: 27px; margin: 0; }
+.fu-slide__year { position: absolute; right: var(--book-margin); top: 27px; margin: 0; }
+.fu-slide__body { position: absolute; left: var(--book-margin); right: var(--book-margin); top: 120px; bottom: 120px; }
+.fu-slide__note { position: absolute; left: var(--book-margin); bottom: 85px; width: 650px; margin: 0; }
+.fu-slide__note > span { display: block; }
+.fu-slide__foot { position: absolute; left: var(--book-margin); right: var(--book-margin); bottom: 27px; height: 18px; }
+.fu-slide__brand { position: absolute; left: 0; bottom: 0; text-transform: uppercase; }
+.fu-slide__section { position: absolute; left: 627px; bottom: -10px; font-size: 16px; text-decoration: underline; }
+.fu-slide__page { position: absolute; right: 0; bottom: 0; }
+.fu-opener__title { position: absolute; left: 27px; top: 27px; margin: 0; font-weight: 400; text-transform: uppercase; }
+.fu-opener__list { position: absolute; left: 1283px; top: 21px; margin: 0; padding: 0; list-style: none; }
+.fu-opener__list li { display: grid; grid-template-columns: 157px auto; }
+.fu-concept__credit { position: absolute; left: var(--book-margin); top: 25px; margin: 0; }
+.fu-concept__label { position: absolute; left: var(--book-photo-left); top: 25px; margin: 0; }
+.fu-concept__year { position: absolute; right: var(--book-margin); top: 25px; margin: 0; }
+.fu-concept__tags { position: absolute; left: var(--book-margin); top: 95px; width: 1000px; display: flex; flex-wrap: wrap; gap: var(--tag-gap); }
+.fu-concept__tags--rows { flex-direction: column; flex-wrap: nowrap; }
+.fu-concept__row { display: flex; flex-wrap: wrap; gap: var(--tag-gap); }
+.fu-concept__photo { position: absolute; left: var(--book-photo-left); top: 70px; width: 763px; height: 1010px; object-fit: cover; }
+.fu-concept__text { position: absolute; left: 35px; bottom: 59px; width: 1000px; }
+.fu-concept__text p { margin: 33px 0 0; }
+.fu-concept__heading { margin: 0; font-weight: 400; }
+.fu-concept__heading > span { display: block; }
+.fu-statement__kicker { position: absolute; left: var(--book-margin); top: 166px; margin: 0; }
+.fu-statement__text { position: absolute; left: var(--book-margin); top: 420px; width: 1500px; margin: 0; font-weight: 400; }
+.fu-statement__text > span { display: block; }
+.fu-statement__lead { position: absolute; left: 35px; bottom: 66px; width: 1550px; margin: 0; }
+
+/* Tag — the concept pages' pill, 60px tall at slide scale */
+.fu-tag { display: inline-flex; align-items: center; box-sizing: border-box; height: var(--tag-height); padding: 0 var(--tag-padding); border-radius: var(--radius-tag); text-transform: uppercase; white-space: nowrap; vertical-align: middle; }
+
+/* ColorBar — the palette page's bars, 262 × 960 */
+.fu-colorbar { position: relative; box-sizing: border-box; width: 262px; height: 960px; margin: 0; }
+.fu-colorbar__name { position: absolute; left: 30px; top: 31px; right: 20px; }
+.fu-colorbar__name > span { display: block; }
+.fu-colorbar__specs { position: absolute; left: 30px; right: 16px; bottom: 37px; margin: 0; display: grid; gap: 9px; }
+.fu-colorbar__specs div { display: grid; grid-template-columns: 110px auto; }
+.fu-colorbar__specs dt, .fu-colorbar__specs dd { margin: 0; }
+.fu-colorbar__specs dd { white-space: pre; }
+
+/* StoryFrame — 1080 × 1920 */
+.fu-story { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+.fu-story__art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.fu-story__content { position: absolute; left: 96px; right: 96px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.fu-story--logo .fu-story__content { top: 200px; bottom: 560px; }
+.fu-story--glasses .fu-story__content { top: 240px; bottom: 240px; }
+.fu-story--fiammo .fu-story__content { top: 330px; bottom: 1000px; }
+.fu-story--mark .fu-story__content { top: 320px; bottom: 380px; }
+
+/* HighlightCover — Instagram highlight artwork */
+.fu-highlight { display: inline-flex; flex-direction: column; align-items: center; gap: 10px; margin: 0; }
+.fu-highlight__tile { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.fu-highlight__tile--round { border-radius: var(--radius-round); }
+.fu-highlight__img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fu-highlight__label { font-family: var(--font-sans); font-size: 14px; line-height: 18px; color: var(--ink); }
