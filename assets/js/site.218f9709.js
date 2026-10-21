@@ -172,6 +172,109 @@
   });
 
 
+
+  // ===== Modern layer =====
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // header state
+    var head = document.querySelector('.site-head'), heads = document.querySelectorAll('.site-head');
+    function onScroll() {
+      var y = window.pageYOffset || 0;
+      Array.prototype.forEach.call(heads, function (h) { h.classList.toggle('is-scrolled', y > 30); });
+      if (mbar) mbar.classList.toggle('show', y > 420);
+    }
+    // mobile menu
+    var rows = document.querySelectorAll('.site-head__row'), row = rows[0], nav = document.querySelector('.site-nav');
+    if (row && nav) {
+      var burger = document.createElement('button');
+      burger.type = 'button'; burger.className = 'burger'; burger.setAttribute('aria-label', 'Open menu'); burger.setAttribute('aria-expanded', 'false');
+      burger.innerHTML = '<span></span>';
+      var burgers = Array.prototype.map.call(rows, function (r, i) { var bb = i ? burger.cloneNode(true) : burger; r.appendChild(bb); return bb; });
+      var mm = document.createElement('div'); mm.className = 'mmenu'; mm.id = 'mmenu';
+      var mnav = nav.cloneNode(true); mnav.className = ''; mnav.setAttribute('aria-label', 'Mobile');
+      mm.appendChild(mnav);
+      Array.prototype.forEach.call(mnav.querySelectorAll('a'), function (a, i) { a.style.transitionDelay = (0.15 + i * 0.05) + 's'; });
+      var foot = document.createElement('div'); foot.className = 'mmenu__foot';
+      var book = row.querySelector('.btn'); if (book) { var b2 = book.cloneNode(true); b2.style.alignSelf = 'flex-start'; foot.appendChild(b2); }
+      var p = document.createElement('p'); p.textContent = '+971 50 256 6425 · info@myfuoco.com'; foot.appendChild(p);
+      mm.appendChild(foot);
+      head.insertAdjacentElement('afterend', mm);
+      burgers.forEach(function (bb) { bb.setAttribute('aria-controls', 'mmenu'); });
+      function setMenu(open) {
+        document.body.classList.toggle('menu-open', open);
+        burgers.forEach(function (bb) { bb.setAttribute('aria-expanded', open ? 'true' : 'false'); bb.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); });
+      }
+      burgers.forEach(function (bb) { bb.addEventListener('click', function () { setMenu(!document.body.classList.contains('menu-open')); }); });
+      mm.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+    }
+    // floating booking bar on phones
+    var mbar = document.createElement('div'); mbar.className = 'mbar';
+    var home = (document.querySelector('.site-head a[aria-label*="home"]') || {}).getAttribute ? document.querySelector('.site-head a[aria-label*="home"]').getAttribute('href') : '/';
+    var base = (home.charAt(0) === '#' || home === './') ? '' : home;
+    mbar.innerHTML = '<a href="' + base + '#menus">Menus</a><a class="on" href="https://widget.servmeco.com/?oid=1672">Book a table</a>';
+    document.body.appendChild(mbar);
+    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    function setHH() { if (head) document.documentElement.style.setProperty('--hh', head.offsetHeight + 'px'); }
+    setHH(); window.addEventListener('resize', setHH);
+
+    // hero ember follows the pointer
+    var xh = document.querySelector('.xhero');
+    if (xh && !reduce) {
+      xh.addEventListener('pointermove', function (e) {
+        var r = xh.getBoundingClientRect();
+        xh.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+        xh.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+      });
+    }
+
+    // reveal below-the-fold content
+    if (!reduce && 'IntersectionObserver' in window) {
+      var sel = 'main section h2, main section .lead, main section .photo, main section .card, main section .grid-3 > *, main section .grid-4 > *, main section .week li, main section .btn-row, main section .ev-pack, main section .pk, main section .dk > *, main section .menu-wrap, .site-foot .grid-4 > *';
+      var vh = window.innerHeight;
+      var els = Array.prototype.filter.call(document.querySelectorAll(sel), function (el) {
+        return !el.closest('.xhero') && !el.closest('.reader') && el.getBoundingClientRect().top > vh * 0.95;
+      });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      els.forEach(function (el) {
+        var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+        el.style.setProperty('--d', Math.min(sib, 6) * 0.08 + 's');
+        el.classList.add('rv'); io.observe(el);
+      });
+    }
+
+    // gentle parallax on photos
+    if (!reduce) {
+      var ph = Array.prototype.slice.call(document.querySelectorAll('main .photo img'));
+      var ticking = false;
+      function par() {
+        var vh = window.innerHeight;
+        ph.forEach(function (img) {
+          var r = img.parentElement.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) return;
+          var t = ((r.top + r.height / 2) - vh / 2) / vh;
+          img.style.translate = '0 ' + (t * -28).toFixed(1) + 'px';
+        });
+        ticking = false;
+      }
+      window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(par); } }, { passive: true });
+      par();
+    }
+  })();
+
+
+  // Line-up: highlight today's offers
+  (function () {
+    var day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()];
+    document.querySelectorAll('.lineup > li[data-days]').forEach(function (li) {
+      if (li.getAttribute('data-days').split(' ').indexOf(day) < 0) return;
+      li.classList.add('is-today');
+      var e = li.querySelector('.eyebrow');
+      if (e && !e.querySelector('.today-tag')) { var t = document.createElement('span'); t.className = 'today-tag'; t.textContent = 'Today'; e.appendChild(t); }
+    });
+  })();
   // Festive countdown to midnight 31 Dec 2026, Dubai (UTC+4)
   (function () {
     var cells = document.querySelectorAll('[data-cd]');
